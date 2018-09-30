@@ -1,6 +1,4 @@
-"""тестируем реконвертацию исходного файла"""
 import random
-
 import ngram
 import glob
 
@@ -16,6 +14,8 @@ import operator
 import wild_card
 from music_controller import get_msg, create_midi
 
+MELODY_LIMIT = 20
+
 # Тут храним ноты
 notes = []
 # Счетчик для ограничения кол-ва мелодий
@@ -26,12 +26,9 @@ for file in glob.glob("midi/mario/*.mid"):
     # Добавляем в хранилище еще ноты
     notes.extend(get_msg(file))
     nn+=1
-    if nn > 20:
+    if nn > MELODY_LIMIT:
         break
-# Сохраняем на всякий склеиную мелодию
-create_midi(notes)
-print(notes)
-# exit()
+
 print("Создаем словарь всех возможных нот...")
 encoder = LabelBinarizer()
 encoder.fit(notes)
@@ -63,11 +60,6 @@ testY = dataY[size_train:]
 
 print('Создаем нейросеть...')
 model = Sequential()
-# model.add(LSTM(256, input_shape=(look_back, len(data[0])), return_sequences=True))
-# model.add(Dense(256, activation='relu'))
-# model.add(LSTM(256))
-# model.add(Dense(256, activation='relu'))
-# model.add(Dense(len(data[0])))
 model.add(LSTM(64, input_shape=(look_back, len(data[0]))))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(len(data[0]), activation='softmax'))
@@ -82,5 +74,4 @@ for i in range(50):
     print(eval)
     acc.append(eval[1])
     model.save("models/mario" + str(eval[1]) + ".h5")
-exit()
 

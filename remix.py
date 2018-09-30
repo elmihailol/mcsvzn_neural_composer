@@ -1,5 +1,4 @@
 import glob
-
 import ngram
 import numpy
 from keras import Sequential
@@ -41,7 +40,7 @@ trainX, trainY = wild_card.create_dataset(data, look_back)
 print('Загружаем сеть...')
 model = load_model("models/mario0.627370579342913.h5")
 
-print("Магия...")
+print("Генерируем...")
 Y = wild_card.extended_this(model=model, trainX=trainX, trainY=trainY, look_back=look_back,
                               multi=1, type="remake")
 
@@ -59,5 +58,4 @@ for i in range(len(Y)):
     new_notes.append(predicted_label)
 
 sequence_length = 100
-print("СОХРАНЯЕМ!")
 create_midi(new_notes)
